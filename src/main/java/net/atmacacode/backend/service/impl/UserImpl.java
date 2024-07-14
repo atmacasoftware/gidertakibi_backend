@@ -1,19 +1,24 @@
 package net.atmacacode.backend.service.impl;
 
+import jakarta.transaction.Transactional;
+import net.atmacacode.backend.core.messages.ActivationNotificationException;
 import net.atmacacode.backend.core.messages.NotUniqueEmailException;
 import net.atmacacode.backend.dao.UserRepository;
 import net.atmacacode.backend.dto.request.user.UserRequest;
 import net.atmacacode.backend.dto.response.user.UserResponse;
 import net.atmacacode.backend.entities.User;
 import net.atmacacode.backend.mapper.UserMapper;
+import net.atmacacode.backend.service.abstracts.EmailService;
 import net.atmacacode.backend.service.abstracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserImpl implements UserService {
@@ -22,6 +27,9 @@ public class UserImpl implements UserService {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    EmailService emailService;
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -34,6 +42,7 @@ public class UserImpl implements UserService {
             return userMapper.asOutput(userSaved);
         }
         throw new NotUniqueEmailException();
+
     }
 
     @Override
