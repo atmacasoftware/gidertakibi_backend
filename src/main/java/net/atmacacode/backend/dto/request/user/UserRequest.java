@@ -16,14 +16,14 @@ import net.atmacacode.backend.core.validation.UniqueEmail;
 
 public class UserRequest {
 
-    @UniqueEmail(message = "{backend.constraint.email.notUnique}")
+    @UniqueEmail(message = "{gidertakibi.constraint.email.notUnique}")
     @Email
     private String email;
 
-    @Size(min = 1, max = 100, message = "{backend.constraint.firstname.sizeWarning}")
+    @Size(min = 1, max = 100, message = "{gidertakibi.constraint.firstname.sizeWarning}")
     private String first_name;
 
-    @Size(min = 1, max = 100, message = "{backend.constraint.lastname.sizeWarning}")
+    @Size(min = 1, max = 100, message = "{gidertakibi.constraint.lastname.sizeWarning}")
     private String last_name;
 
     @NotNull

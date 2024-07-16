@@ -1,24 +1,20 @@
 package net.atmacacode.backend.service.impl;
 
-import jakarta.transaction.Transactional;
-import net.atmacacode.backend.core.messages.ActivationNotificationException;
-import net.atmacacode.backend.core.messages.NotUniqueEmailException;
+import net.atmacacode.backend.core.exception.NotUniqueEmailException;
 import net.atmacacode.backend.dao.UserRepository;
 import net.atmacacode.backend.dto.request.user.UserRequest;
 import net.atmacacode.backend.dto.response.user.UserResponse;
 import net.atmacacode.backend.entities.User;
-import net.atmacacode.backend.mapper.UserMapper;
 import net.atmacacode.backend.service.abstracts.EmailService;
 import net.atmacacode.backend.service.abstracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class UserImpl implements UserService {
@@ -26,22 +22,20 @@ public class UserImpl implements UserService {
     UserRepository userRepository;
 
     @Autowired
-    UserMapper userMapper;
-
-    @Autowired
     EmailService emailService;
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
-    public UserResponse save(UserRequest userRequest) {
-        Optional<User> isUserExist = userRepository.findByEmail(userRequest.getEmail());
-        if (isUserExist.isEmpty()) {
-            userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-            User userSaved = userRepository.save(userMapper.asEntity(userRequest));
-            return userMapper.asOutput(userSaved);
+    public void save(UserRequest userRequest) {
+        try{
+            User user = userRequest.toUser();
+            user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+            userRepository.save(user);
+        } catch(DataIntegrityViolationException e){
+            throw new NotUniqueEmailException();
         }
-        throw new NotUniqueEmailException();
+
 
     }
 

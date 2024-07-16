@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public interface UserService {
 
-    UserResponse save(UserRequest userRequest);
+    void save(UserRequest userRequest);
 
     UserResponse getUserById(long id);
 
