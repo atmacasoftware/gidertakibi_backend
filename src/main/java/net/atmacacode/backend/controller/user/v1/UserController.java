@@ -32,6 +32,6 @@ public class UserController {
 
     @PostMapping("/auth")
     AuthResponse handleAuthentication(@Valid @RequestBody Credentials cred) {
-        return
+        return userService.authenticate(cred);
     }
 }
