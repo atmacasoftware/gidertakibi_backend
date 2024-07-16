@@ -23,6 +23,7 @@ import java.util.Optional;
 
 @Service
 public class UserImpl implements UserService {
+
     @Autowired
     UserRepository userRepository;
 
@@ -32,7 +33,7 @@ public class UserImpl implements UserService {
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
-    private TokenService tokenService;
+    BasicTokenImpl basicToken;
 
     @Override
     public void save(UserRequest userRequest) {
@@ -75,7 +76,7 @@ public class UserImpl implements UserService {
         User user = this.findByEmail(creds.email());
         if(!passwordEncoder.matches(creds.password(), user.getPassword())) throw new AuthenticationException();
 
-        Token token = tokenService.createToken(user,creds);
+        Token token = basicToken.createToken(user,creds);
         AuthResponse authResponse = new AuthResponse();
         authResponse.setToken(token);
         authResponse.setUser(new UserResponse(user));

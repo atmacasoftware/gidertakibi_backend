@@ -4,9 +4,11 @@ import net.atmacacode.backend.core.token.Credentials;
 import net.atmacacode.backend.core.token.Token;
 import net.atmacacode.backend.entities.User;
 import net.atmacacode.backend.service.abstracts.TokenService;
+import org.springframework.stereotype.Service;
 
 import java.util.Base64;
 
+@Service
 public class BasicTokenImpl implements TokenService {
     @Override
     public Token createToken(User user, Credentials creds) {
