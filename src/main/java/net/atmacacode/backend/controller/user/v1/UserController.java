@@ -3,7 +3,9 @@ package net.atmacacode.backend.controller.user.v1;
 import jakarta.validation.Valid;
 import net.atmacacode.backend.core.messages.GenericMessage;
 import net.atmacacode.backend.core.messages.Messages;
+import net.atmacacode.backend.core.token.Credentials;
 import net.atmacacode.backend.dto.request.user.UserRequest;
+import net.atmacacode.backend.dto.response.user.AuthResponse;
 import net.atmacacode.backend.service.abstracts.UserService;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -26,5 +28,10 @@ public class UserController {
         userService.save(userRequest);
         String message = Messages.getMessageForLocale("gidertakibi.user.created.success", LocaleContextHolder.getLocale());
         return new GenericMessage(message);
+    }
+
+    @PostMapping("/auth")
+    AuthResponse handleAuthentication(@Valid @RequestBody Credentials cred) {
+        return
     }
 }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.atmacacode.backend.entities.User;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,4 +18,15 @@ public class UserResponse {
     private String mobile;
     private int userType;
     private String image;
+
+    public UserResponse(User user) {
+        setId(user.getId());
+        setEmail(user.getEmail());
+        setFirst_name(user.getFirst_name());
+        setLast_name(user.getLast_name());
+        setMobile(user.getMobile());
+        setUserType(user.getUserType());
+        setImage(user.getImage());
+    }
+
 }
