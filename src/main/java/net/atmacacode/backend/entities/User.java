@@ -3,6 +3,7 @@ package net.atmacacode.backend.entities;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.UUID;
@@ -34,6 +35,7 @@ public class User {
     @Column
     private String password;
 
+    @Getter
     @Column
     private boolean activated = true;
 

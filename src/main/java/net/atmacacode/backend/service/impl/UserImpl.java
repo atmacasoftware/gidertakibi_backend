@@ -1,25 +1,24 @@
 package net.atmacacode.backend.service.impl;
 
 import net.atmacacode.backend.core.exception.AuthenticationException;
+import net.atmacacode.backend.core.exception.NotFoundException;
 import net.atmacacode.backend.core.exception.NotUniqueEmailException;
 import net.atmacacode.backend.core.token.Credentials;
 import net.atmacacode.backend.core.token.Token;
 import net.atmacacode.backend.dao.UserRepository;
 import net.atmacacode.backend.dto.request.user.UserRequest;
+import net.atmacacode.backend.dto.request.user.UserUpdateRequest;
 import net.atmacacode.backend.dto.response.user.AuthResponse;
 import net.atmacacode.backend.dto.response.user.UserResponse;
 import net.atmacacode.backend.entities.User;
 import net.atmacacode.backend.service.abstracts.EmailService;
-import net.atmacacode.backend.service.abstracts.TokenService;
 import net.atmacacode.backend.service.abstracts.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserImpl implements UserService {
@@ -30,7 +29,8 @@ public class UserImpl implements UserService {
     @Autowired
     EmailService emailService;
 
-    PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     BasicTokenImpl basicToken;
@@ -47,8 +47,8 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public UserResponse getUserById(long id) {
-        return null;
+    public User getUserById(long id) {
+        return userRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
     @Override
@@ -57,14 +57,19 @@ public class UserImpl implements UserService {
     }
 
     @Override
-    public List<UserResponse> getAllUsers() {
-        return List.of();
+    public Page<User> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     @Override
-    public UserResponse update(long id, UserRequest userRequest) {
-        return null;
+    public User update(long id, UserUpdateRequest userUpdateRequest) {
+        User inDb =this.getUserById(id);
+        inDb.setFirst_name(userUpdateRequest.getFirst_name());
+        inDb.setLast_name(userUpdateRequest.getLast_name());
+        inDb.setImage(userUpdateRequest.getImage());
+        return userRepository.save(inDb);
     }
+
 
     @Override
     public void deleteById(long id) {

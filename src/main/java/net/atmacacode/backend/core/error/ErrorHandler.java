@@ -2,11 +2,8 @@ package net.atmacacode.backend.core.error;
 
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
-import net.atmacacode.backend.core.exception.AuthenticationException;
-import net.atmacacode.backend.core.exception.InvalidTokenException;
-import net.atmacacode.backend.core.exception.ActivationNotificationException;
+import net.atmacacode.backend.core.exception.*;
 import net.atmacacode.backend.core.messages.Messages;
-import net.atmacacode.backend.core.exception.NotUniqueEmailException;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -24,7 +21,8 @@ public class ErrorHandler {
             ActivationNotificationException.class,
             InvalidTokenException.class,
             EntityNotFoundException.class,
-            AuthenticationException.class
+            AuthenticationException.class,
+            NotFoundException.class
     })
     ResponseEntity<ApiError> handleException(Exception exception, HttpServletRequest request) {
         ApiError apiError = new ApiError();
@@ -47,6 +45,8 @@ public class ErrorHandler {
             apiError.setStatus(404);
         } else if (exception instanceof AuthenticationException) {
             apiError.setStatus(401);
+        } else if (exception instanceof NotFoundException) {
+            apiError.setStatus(400);
         }
         return ResponseEntity.status(apiError.getStatus()).body(apiError);
     }
