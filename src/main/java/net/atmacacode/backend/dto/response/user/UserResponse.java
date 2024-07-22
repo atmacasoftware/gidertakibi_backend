@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.atmacacode.backend.entities.User;
 
+import java.time.LocalDate;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -18,6 +20,7 @@ public class UserResponse {
     private String mobile;
     private int userType;
     private String image;
+    private LocalDate created_at;
 
     public UserResponse(User user) {
         setId(user.getId());
@@ -27,6 +30,7 @@ public class UserResponse {
         setMobile(user.getMobile());
         setUserType(user.getUserType());
         setImage(user.getImage());
+        setCreated_at(user.getCreated_at());
     }
 
 }

@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -48,4 +50,9 @@ public class User {
     @Column
     private String image;
 
+    @Column
+    private LocalDate created_at = LocalDate.now();
+
+    @Column
+    private LocalDateTime updated_at;
 }

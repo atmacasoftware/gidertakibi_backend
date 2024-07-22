@@ -30,6 +30,8 @@ public class UserController {
     @PostMapping()
     @ResponseStatus(HttpStatus.CREATED)
     public GenericMessage save(@Valid @RequestBody UserRequest userRequest) {
+        System.out.println(userRequest.getFirst_name());
+        System.out.println(userRequest.getLast_name());
         userService.save(userRequest);
         String message = Messages.getMessageForLocale("gidertakibi.user.created.success", LocaleContextHolder.getLocale());
         return new GenericMessage(message);
