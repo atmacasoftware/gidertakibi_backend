@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.atmacacode.backend.core.validation.FileType;
 import net.atmacacode.backend.core.validation.UniqueEmail;
 import net.atmacacode.backend.entities.User;
 
@@ -26,6 +27,7 @@ public class UserUpdateRequest {
     @NotNull
     private int userType;
 
+    @FileType(types={"jpeg", "png"})
     private String image;
 
     public User toUser() {
@@ -33,6 +35,7 @@ public class UserUpdateRequest {
         user.setFirst_name(first_name);
         user.setLast_name(last_name);
         user.setUserType(userType);
+        user.setImage(image);
         return user;
     }
 }

@@ -34,6 +34,8 @@ public class UserImpl implements UserService {
 
     @Autowired
     BasicTokenImpl basicToken;
+    @Autowired
+    private FileService fileService;
 
     @Override
     public void save(UserRequest userRequest) {
@@ -66,7 +68,11 @@ public class UserImpl implements UserService {
         User inDb =this.getUserById(id);
         inDb.setFirst_name(userUpdateRequest.getFirst_name());
         inDb.setLast_name(userUpdateRequest.getLast_name());
-        inDb.setImage(userUpdateRequest.getImage());
+        if(userUpdateRequest.getImage() != null){
+            String filename = fileService.saveBase64StringAsFile(userUpdateRequest.getImage());
+            fileService.deleteProfileImage(inDb.getImage());
+            inDb.setImage(filename);
+        }
         return userRepository.save(inDb);
     }
 
