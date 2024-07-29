@@ -30,12 +30,15 @@ public class UserUpdateRequest {
     @FileType(types={"jpeg", "png"})
     private String image;
 
+    private String mobile;
+
     public User toUser() {
         User user = new User();
         user.setFirst_name(first_name);
         user.setLast_name(last_name);
         user.setUserType(userType);
         user.setImage(image);
+        setMobile(mobile);
         return user;
     }
 }

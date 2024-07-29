@@ -68,6 +68,7 @@ public class UserImpl implements UserService {
         User inDb =this.getUserById(id);
         inDb.setFirst_name(userUpdateRequest.getFirst_name());
         inDb.setLast_name(userUpdateRequest.getLast_name());
+        inDb.setMobile(userUpdateRequest.getMobile());
         if(userUpdateRequest.getImage() != null){
             String filename = fileService.saveBase64StringAsFile(userUpdateRequest.getImage());
             fileService.deleteProfileImage(inDb.getImage());
